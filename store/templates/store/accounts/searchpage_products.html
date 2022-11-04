@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="row">
+<div class="col-12">
+        <a style="float:right; margin:5px" class="badge-pill badge-warning" href="{% url 'store' %}">Back To Mall</a>
+    </div>
+    </div>
+<center><h5>Product searched for : {{query}}</h5></center>
+<hr>
+<div class="row">
+    {% if products %}
+    {% for product in products%}
+
+    <div class="col-xs-10 col-lg-3 col-md-3 box-element card h-100 w-50">
+        <div style="height:4rem">
+            <p><a class="badge-pill" href="{% url 'store_seller' product.seller.pk %}">{{product.seller.store_name}}</a>
+
+        </div>
+
+
+
+            <img class="img-fluid" src="{{ product.imageURL}}" style="height:10rem" alt="" />
+        </a>
+        <div class="box-element product">
+            <div class="portfolio-caption" style="height:2rem">
+            <div class="portfolio-caption-heading" style="font-size:0.8rem"><center><strong>{{product.name}}</strong></center></div>
+        </div>
+            <hr>
+
+            <a class="btn btn-outline-success" href="{% url 'product_detail' product.pk%}">View</a>
+            <h8 style="display: inline-block; float: right"><span>&#8358;</span>{{product.price|floatformat:2}}</h8>
+        </div>
+
+
+</div>
+
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <p>Product you searched for is unavailable</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

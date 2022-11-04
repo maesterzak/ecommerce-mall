@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Mall Naija</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+        <link href="{% static 'accounts/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- Google fonts-->
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/toastr.css' %}">
+
+    <script type="text/javascript">
+            var user = '{{request.user}}'
+
+            function getToken(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getToken('csrftoken');
+
+    </script>
+</head>
+<body id="page-top">
+<div class="row bg-dark">
+        <div class="col-3">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="{% static 'assets/img/malllog.png'%}"
+                                                                            style="height:2rem" alt=""/></a>
+        </div>
+    <div class="col-9">
+            {% for seller in seller_detail %}
+        <a class="card btn" style="font-size:1rem;background-color:transparent;color:white"><strong>{{seller.store_name}}</strong></a>
+            {% endfor %}
+        </div>
+</div>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-dark " id="mainNav" style="padding-top: 0rem; padding-bottom:0rem;">
+
+
+    <div class="container">
+        <div class="form-inline my-2 my-lg-0">
+            {% if request.user.seller %}
+            <a href="{% url 'dashboard' %}" class="btn btn-warning">Dashboard</a>
+            <a href="#">
+                <!--<img class="profile-icon" src="{% static 'images/profile_logo.png' %}">-->
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:blue"></i>
+
+            </a>
+            {% elif request.user.customer %}
+            <a href="{% url 'user-page' %}" class="btn btn-warning">Customers</a>
+            <a href="#">
+                <!--<img class="profile-icon" src="{% static 'images/profile_logo.png' %}">-->
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+
+            </a>
+
+            {% else %}
+
+            <div class="dropdown">
+    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Register
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a href="{% url 'register' %}" class="dropdown-item " style="color:gold;">Customer</a>
+        <a class="dropdown-item " style="color:gold;" href="{% url 'register_seller' %}">Seller</a>
+    </div>
+</div>
+
+            <a href="#">
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gray"></i>
+
+            </a>
+            {% endif %}
+
+            <a href="{% url 'cart' %}">
+                <i class="fas fa-shopping-cart h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+
+            </a>
+            <p id="cart-total">{{cartItems}}</p>
+        </div>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ml-1"></i>
+        </button>
+        <div class="collapse navbar-collapse collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ml-auto">
+                {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-warning">LOGOUT</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-warning">LOG IN</a>
+            {% endif %}
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+<!-- Masthead-->
+
+
+<style>
+{% for seller in seller_detail %}
+    header.mastheadss {
+  padding-top: 10.5rem;
+  padding-bottom: 6rem;
+  text-align: center;
+  color: #fff;
+  background-image: url("{{seller.store_imageURL}}");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+{% endfor %}
+header.mastheadss .masthead-subheading {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Droid Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+header.mastheadss .masthead-heading {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@media (min-width: 768px) {
+  header.mastheadss {
+    padding-top: 17rem;
+    padding-bottom: 12.5rem;
+  }
+  header.mastheadss .masthead-subheading {
+    font-size: 2.25rem;
+    font-style: italic;
+    line-height: 2.25rem;
+    margin-bottom: 2rem;
+  }
+  header.mastheadss .masthead-heading {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 4.5rem;
+    margin-bottom: 4rem;
+  }
+}
+
+</style>
+<header class="mastheadss">
+</header>
+<hr>
+{% for seller in seller_detail %}
+<div class="container">
+        <div class="row align-items-center">
+            {% for seller in seller_detail %}
+            <div class="col-lg-4 my-3 my-lg-0">Contact:
+                <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{seller.store_whatsapp}}"><i class="fab fa-whatsapp"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{seller.store_phone}}"><i class="fa fa-phone"></i></a>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endfor %}
+     <hr>
+    <div class = "container" >
+
+        {% for seller in seller_detail %}
+       <strong> {{seller.description_store}}</strong>
+        {% endfor %}
+        <hr>
+{% if request.user.is_authenticated %}
+            <p> WELCOME!! {{request.user.get_full_name|default:request.user}} To my store </p>
+            <p>{{page_obj.store_name}} </p>
+            {% else %}
+            <p> WELCOME!! TO MY STORE</p>
+            {% endif %}
+<div class="'row">
+    <div class="col">
+        <div class="col-xs-6">
+        <div class="card card-body">
+            <div class="dropdown">
+                <div class="col-xs-6">
+            <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'store' %}">Back To MALL</a>
+        </div>
+                <form method="get">
+
+    <button class="btn btn-secondary dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        FILTERS
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {{myFilter.form}}
+<button type="submit" class="btn btn-primary">search</button>
+    </div>
+
+
+            </form>
+</div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+
+<div class="row">
+    {% for product in page_obj %}
+    <div class="col-xs-10 col-lg-3 box-element card h-100 w-50">
+        <div>
+            <p style="display: inline-block; float: left; color:gold">{{product.category}}</p>
+        </div>
+
+
+
+            <img class="img-fluid" src="{{ product.imageURL}}" style="height:10rem" alt="" />
+
+        <div class="box-element product">
+            <div class="portfolio-caption" style="height:2rem">
+            <div class="portfolio-caption-heading" style="font-size:0.8rem"><center><strong>{{product.name}}</strong></center></div>
+        </div>
+            <hr>
+
+            <a class="btn btn-outline-success" href="{% url 'product_detail' product.pk%}">View</a>
+            <h8 style="display: inline-block; float: right"><span>&#8358;</span>{{product.price|floatformat:2}}</h8>
+        </div>
+
+
+</div>
+    {% endfor %}
+
+    {% if page_obj.has_other_pages %}
+    <br>
+    <br>
+
+    <div class="col-lg-12">
+
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+
+            <li class="page-item"><a class="page-link"
+                                     href="?page={{ page_obj.previous_page_number }}">&laquo;Previous</a></li>
+
+            {% endif %}
+            {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+            <li class="active page-item page-link-current"><span>{{ i }} <span class="sr-only">(current)</span></span>
+            </li>
+            {% else %}
+            <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"> Next&raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+
+
+    </div>
+    {% endif %}
+</div>
+
+
+</div>
+
+<br>
+<br>
+
+<!-- Team-->
+<section class="page-section bg-light" id="team">
+    <div class="container">
+        <div class="text-center">
+            {% for seller in seller_detail %}
+            <h2 class="section-heading text-uppercase">About Owner</h2>
+
+        </div>
+        <center><div class="row">
+            <div class="col-12">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="{{seller.imageURL}}" alt=""/>
+
+                    <h4>{{seller.user.get_full_name}}</h4>
+
+                    <p class="text-muted">Owner of {{seller.store_name}}</p>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+
+        </div></center>
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">{{seller.about_owner}}</p></div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+
+
+
+{% for seller in seller_detail %}
+<!-- Footer-->
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright Â© MALL NAIJA-{{seller.store_name}} 2020</div>
+
+            <div class="col-lg-4 text-lg-right">
+                <a class="mr-3" href="#!">Privacy Policy</a>
+                <a href="#!">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endfor %}
+
+
+
+
+        <!-- Bootstrap core JS-->
+        <script src="{% static 'accounts/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'accounts/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script>
+window.addEventListener('scroll', function(e){
+    var sticky = $(window).scrollTop();
+    if (sticky >= 500) {
+    document.getElementById('mainNav').classList.add('fixed-top')
+    document.getElementById('mainNav').classList.remove('bg-dark')
+    document.getElementById('mainNav').classList.add('bg-transparent')
+
+    }
+    if (sticky <=500){
+        document.getElementById('mainNav').classList.remove('fixed-top')
+        document.getElementById('mainNav').classList.add('bg-dark')
+        document.getElementById('mainNav').classList.remove('bg-transparent')
+    }
+});
+
+
+</script>
+
+
+<script src="{% static 'js/toastr.js' %}"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'js/scripts.js'%}"></script>
+    <script src="{% static 'js/sweetalerts.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+{% load sweetify %}
+{% sweetify %}
+    </body>
+</html>

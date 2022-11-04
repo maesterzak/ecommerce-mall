@@ -1,0 +1,40 @@
+{% extends 'store/accounts/base_2.html' %}
+{% load static %}
+{% block content %}
+
+<body>
+<br>
+<div class="row">
+    <div class="col-12">
+        <center><a class="btn btn-success" href="{% url 'dashboard'%}">Back to Dashboard</a></center>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-xs-12 col-md-6 box-element">
+        <center><p class="text-xs font-weight-bold text-primary text-uppercase mb-1">LEDGER BALANCE:</p></center>
+        <center><p><strong>₦{{sellertransc.ledger_balance}}</strong></p></center>
+    </div>
+    <div class="col-lg-6 col-xs-12 col-md-6 box-element">
+        <center><p class="text-xs font-weight-bold text-success text-uppercase mb-1">AVAILABLE BALANCE:</p></center>
+        <center><p><strong>₦{{sellertransc.available_balance}}</strong></p></center>
+    </div>
+</div>
+<hr>
+<div class="'row">
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <h1>Withdrawl Money</h1>
+                <form method="POST" action="" enctype="multipart/form-data">
+                 {% csrf_token %}
+                    {{form.as_p}}
+
+               <input class="btn btn-primary" type="submit" name="Update information">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

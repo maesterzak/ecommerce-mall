@@ -1,0 +1,13 @@
+{% extends 'store/accounts/base_2.html' %}
+{% load static %}
+{% block content %}
+
+<center><p><strong>Are you sure you want to delete {{product}}</strong></p></center>
+<center><form method="POST" action="{% url 'deleteproduct' product.id %}"></center>
+    {% csrf_token %}
+
+    <center><a class="btn btn-warning" href="{% url 'table' %}">CANCEL</a>
+    <input class="btn btn-danger" type="submit" name="Confirm delete"></center>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,131 @@
+{% extends 'store/accounts/base_2.html' %}
+
+{% load static %}
+{% block content %}
+
+<style>
+    .profile-pic {
+        max-width: 200px;
+        max-height: 200px;
+        margin: 0 auto;
+        boarder-radius: 50%;
+    }
+</style>
+<br>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-body">
+            Email: {{user.email}}
+            <hr>
+            <a class="btn btn-warning" href="{% url 'dashboard' %}">&#8592;Back to Dashboard</a>
+            <hr>
+            <h3 style="text-align: center">Account settings</h3>
+            <hr>
+            <img class="profile-pic" src="{{request.user.seller.imageURL}}">
+            <p>owner pic</p>
+            <hr>
+            <img class="profile-pic" src="{{request.user.seller.store_imageURL}}">
+            <p><strong>Store Pic</strong></p>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card card-body">
+            {{form.errors}}
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <center><h6 class="btn btn-light">{{form.store_name.label}} <a onclick="query1();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                <center>{{form.store_name}}</center>
+<hr>
+                      <center><h6 class="btn btn-light">{{form.store_phone.label}} <a onclick="query8();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                <center>{{form.store_phone}}</center>
+<hr>
+
+                      <center><h6 class="btn btn-light">{{form.store_whatsapp.label}} <a onclick="query9();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                <center>{{form.store_whatsapp}}</center>
+<hr>
+                <center><h6 class="btn btn-light">{{form.store_type.label}} <a onclick="query2();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.store_type}}
+<hr>
+                <center><h6 class="btn btn-light">{{form.description_store.label}} <a onclick="query3();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.description_store}}
+<hr>
+                <center><h6 class="btn btn-light">{{form.about_owner.label}} <a onclick="query4();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.about_owner}}
+<hr>
+                <center><h6 class="btn btn-light">{{form.store_pic.label}} <a onclick="query5();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.store_pic}}
+<hr>
+                <center><h6 class="btn btn-light">{{form.owner_pic.label}} <a onclick="query6();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.owner_pic}}
+<hr>
+                <center><h6 class="btn btn-light">{{form.shipping_method.label}} <a onclick="query7();return false" class="fa fa-question-circle"></a></h6></center>
+                {{form.shipping_method}}
+<hr>
+
+                <input class="btn btn-primary" type="submit" name="Update information">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function query1() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Input your store name, p.s only 25 characters are allowed  ');
+    }
+    function query2() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('From the list below select the category or categories that accurately describe what your store sells   ');
+    }
+    function query3() {
+        toastr.options.timeOut = 7000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('This should contain a short description or welcome message to your customers, you can leave blank if you want. ');
+    }
+    function query4() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('This should contain a description of yourself ');
+    }
+    function query5() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('This is the image that is displayed at the top of your store page ');
+    }
+    function query6() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('This is the image that is displayed on your profile');
+    }
+    function query7() {
+        toastr.options.timeOut = 7000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Select the shipping method or methods you want to offer to your customers. Read sellers guide to learn more ');
+    }
+    function query8() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Input phone number through which customers can contact you at all times ');
+    }
+    function query9() {
+        toastr.options.timeOut = 4000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Input whatsapp number through which customers can chat with you on whatsapp at all times ');
+    }
+
+
+</script>
+
+<br>
+
+{% endblock content %}

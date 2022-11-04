@@ -1,0 +1,29 @@
+{% extends 'store/accounts/base_2.html' %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-12">
+        <center><a class="btn btn-success" href="{% url 'dashboard'%}">Back to Dashboard</a></center>
+    </div>
+</div>
+<hr>
+    <center><h6>Money Withdrawal</h6></center>
+<div class="row box-element">
+{% for money_withdrawal in money_withdrawal%}
+    <div class="col-12 ">
+        <p>Date: {{money_withdrawal.date}}</p>
+        <p>Seller: {{money_withdrawal.seller}}</p>
+        {% if money_withdrawal.complete%}
+        <p>Status: Completed</p>
+        {% else %}
+        <p>Status: Pending</p>
+        {% endif %}
+        <p>Amount: ₦{{money_withdrawal.withdrawl_amount}}</p>
+        <p>Bank Account Name: {{money_withdrawal.bank_account_name}}</p>
+        <p>Bank Account Number: {{money_withdrawal.bank_account_number}}</p>
+        <p>Bank Name: {{money_withdrawal.bank_name}}</p>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}

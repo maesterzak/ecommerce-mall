@@ -1,0 +1,194 @@
+{% extends 'store/accounts/base_2.html' %}
+{% load static %}
+{% block content %}
+<br>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Back To Mall</a>
+          <hr>
+             <div class="'row">
+        {% if request.user.seller %}
+        {% if status %}
+        <div class="col-md-6">
+        <div class="card card-body">
+                <p> ORDER HAS BEEN COMPLETED</p>
+            </div>
+    </div>
+        {% else %}
+               <div class="col-md-6">
+        <div class="card card-body">
+
+                <form method="POST" action="" enctype="multipart/form-data">
+                 {% csrf_token %}
+                    {{form.complete_seller.label}}
+                    {{form.complete_seller}}
+
+                <input type="submit" name="Update information">
+            </form>
+
+        </div>
+    </div>
+        {% endif %}
+        {% elif request.user.customer %}
+        {% if status %}
+        <div class="col-md-6">
+        <div class="card card-body">
+                <p> ORDER HAS BEEN COMPLETED</p>
+            </div>
+    </div>
+        {% else %}
+               <div class="col-md-6">
+        <div class="card card-body">
+
+                <form method="POST" action="" enctype="multipart/form-data">
+                 {% csrf_token %}
+                    {{form.complete_customer.label}}
+                    {{form.complete_customer}}
+
+                <input type="submit" name="Update information">
+            </form>
+
+        </div>
+    </div>
+        {% endif %}
+        {% endif %}
+
+</div>
+
+
+<br>
+<center><h8 class="box-element btn-light">Transaction_ID: {{order.transaction_id}}</h8></center>
+            <br>
+<center><h8 class="box-element btn-light">Completed by: {{order.method}}</h8></center>
+            <br>
+            <table class="table">
+
+                <tr>
+                    <th>
+                        <h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
+                    </th>
+                     <th>
+                        <h5>Total: <strong>&#8358;{{order.get_order_total|floatformat:2}}</strong></h5>
+                    </th>
+                    <th>
+            {% if request.user.customer %}
+
+                      <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'user-page' %}">Back To Orders</a>
+
+                        {% else %}
+                        <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'order_list' %}">Back To Orders</a>
+
+                      {% endif %}
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div class="row box-element">
+        <div class="card shadow col-12">
+
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Items</th>
+                      <th>Price(&#8358;)</th>
+                      <th>Quantity</th>
+                      <th>Total(&#8358;)</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Items</th>
+                      <th>Price(&#8358;)</th>
+                      <th>Quantity</th>
+                      <th>Total(&#8358;)</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                                                      {% for orderitemsstuff in orderitems %}
+                    <tr>
+                      <td>{{orderitemsstuff.name}}</td>
+                        <td>{{orderitemsstuff.price}}</td>
+                      <td><p class="quantity">{{orderitemsstuff.quantity}}</p>
+
+                        <td>{{orderitemsstuff.total}}</td>
+
+                    </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="row">
+
+
+                        <div class=" col-xs-12 col-lg-6 col-md-6 box-element">
+                          <center>Customer Details</center><hr>
+                          <p>Full Name-{{order.customer.name}}</p>
+                          <p>Number-{{order.customer.phone_number}}</p>
+                            <p>Email-{{order.customer.email}}</p>
+                            <p>Order Date-{{order.date_orderd}}</p>
+                            <div class="row align-items-center">
+            {% if request.user.seller %}
+            <div class="col-12">Contact:
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-whatsapp"></i></a>
+
+
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{customer.phone_number}}"><i class="fa fa-phone"></i></a>
+
+            </div>
+            {% endif %}
+        </div>
+
+                            {% if shipping %}
+                            <p><center>Shipping Details</center></p>
+                            <p>Shipping Method--{{order.shipping_method}}</p>
+                            <p>State-{{ship.state}}</p>
+                            <p>City-{{ship.city}}</p>
+                            <p>Home Address-{{ship.address}}</p>
+
+                            {% else %}
+                            <p>NO SHIPPING DETAILS!!</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-xs-12 col-lg-6 col-md-6 box-element">
+                          <center>Seller Details</center><hr>
+                          <p>Store Name-{{order.seller.store_name}}</p>
+                          <p>Number-{{order.seller.store_phone}}</p>
+                          <p>Email-{{order.seller.store_email}}</p>
+                            <div class="row align-items-center">
+            {% if request.user.customer %}
+            <div class="col-12">Contact:
+                 <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{admindetails.whatsapp_number}}">
+                     <i class="fab fa-whatsapp"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.email}}"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.facebook}}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.instagram}}"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{admindetails.phone_number}}"><i class="fa fa-phone"></i></a>
+
+            </div>
+                                {% endif %}
+
+        </div>
+                        </div>
+
+
+
+        </div>
+
+<br>
+{% endblock %}

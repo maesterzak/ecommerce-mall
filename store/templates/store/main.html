@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>MALL NAIJA</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <link href="{% static 'accounts/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- Google fonts-->
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/toastr.css' %}">
+
+    <script type="text/javascript">
+            var user = '{{request.user}}'
+
+            function getToken(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getToken('csrftoken');
+
+    </script>
+</head>
+<body id="page-top">
+
+<div class="row bg-dark" style="margin-right:0rem">
+        <div class="col-4">
+            <img style="height:2rem" src="{% static 'assets/img/malllog.png'%}">
+
+        </div>
+    <div class="col-8">
+        <div class="row">
+        <div style="padding-top:0.2rem;color:white;" id="product_search_div" class="col-6">
+            <a id="product_search_btn"><i class="fas fa-search"></i>Products</a>
+        </div>
+        <div style="padding-top:0.2rem;color:white;" id="store_search_div" class="col-6">
+            <a id="store_search_btn"><i class="fas fa-search"></i>Stores</a>
+        </div>
+            <div id="product_search_form" class="col-12 hidden">
+                <form method="GET" action="{% url 'searchpage_products' %}" id="searchform">
+    <input class="searchfield w-50" id="searchbox" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search products"/>
+    <input class="btn-warning" type="submit" value="submit" name="submit">
+</form>
+            </div>
+            <div id="store_search_form" class="col-12 hidden">
+                <form method="GET" action="{% url 'searchpage_store' %}" id="searchform1">
+    <input class="searchfield w-50" id="searchbox1" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search Stores"/>
+                    <input class="btn-warning" type="submit"></form>
+            </div>
+            </div>
+        </div>
+</div>
+
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg bg-dark " id="mainNav" style="padding-top: 0rem; padding-bottom:0rem;">
+
+    <div class="container">
+        <div class="form-inline my-2 my-lg-0">
+            {% if request.user.seller %}
+            <a href="{% url 'dashboard' %}" class="btn btn-warning">Dashboard</a>
+            <a href="#">
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:blue"></i>
+            </a>
+            {% elif request.user.customer %}
+            <a href="{% url 'user-page' %}" class="btn btn-warning">Customers</a>
+            <a href="#">
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+
+            </a>
+
+            {% else %}
+
+            <div class="dropdown">
+    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Register
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a href="{% url 'register' %}" class="dropdown-item " style="color:gold;">Customer</a>
+        <a class="dropdown-item " style="color:gold;" href="{% url 'register_seller' %}">Seller</a>
+    </div>
+</div>
+            <a href="#">
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gray"></i></a>
+            {% endif %}
+
+            <a href="{% url 'cart' %}">
+                <i class="fas fa-shopping-cart h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+
+            </a>
+            <p id="cart-total">{{cartItems}}</p>
+
+        </div>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ml-1"></i>
+        </button>
+        <div class="collapse navbar-collapse collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ml-auto">
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Trending Products</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'mall_guide'%}#beginning">Guide</a></li>
+            </ul>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-warning">LOGOUT</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-warning">LOG IN</a>
+            {% endif %}
+
+        </div>
+    </div>
+</nav>
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-subheading">Welcome To Our MALL!</div>
+        <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
+        <a class="btn btn-primary btn-xl  js-scroll-trigger" href="#services">Shop<i class="fas fa-shopping-cart"></i></a>
+    </div>
+</header>
+<div class="container">
+
+
+    {% block content %} {% endblock %}
+</div>
+<!-- About-->
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">About</h2>
+            <h3 class="section-subheading text-muted">Below is the history of Mall naija </h3>
+        </div>
+        <ul class="timeline">
+            <li>
+                <div class="timeline-image"><img class="rounded-circle img-fluid"
+                                                 src="{% static 'assets/img/about/1.jpg' %}" alt=""/></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4>2020</h4>
+                        <h4 class="subheading">Our Humble Beginnings</h4>
+                    </div>
+                    <div class="timeline-body"><p class="text-muted">Though the idea for mall naija has existed for a while now,
+                        it became a reality when founder Abubakar Zakari began writing the code on march 2020!</p></div>
+                </div>
+            </li>
+                        <li class="timeline-inverted">
+                <div class="timeline-image">
+                    <h4>
+                        Be Part
+                        <br/>
+                        Of Our
+                        <br/>
+                        Story!
+                    </h4>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- Team-->
+<section class="page-section bg-light" id="team">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+            <h3 class="section-subheading text-muted">We are the management board of Mall naija</h3>
+        </div>
+        <div class="row">
+            {% for workerdetails in worker_details %}
+            <div class="col-lg-4">
+                <div class="team-member">
+
+                    <img class="mx-auto rounded-circle" src="{{workerdetails.imageURL}}" alt=""/>
+                    <h4>{{workerdetails.name}}</h4>
+                    <p class="text-muted">{{workerdetails.position}}</p>
+                    <a class="btn btn-dark btn-social mx-2" href="{{workerdetails.phone_number}}"><i class="fa fa-phone"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{workerdetails.whatsapp_number}}"><i class="fab fa-whatsapp"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="{{workerdetails.instagram}}"><i class="fab fa-instagram"></i></a>
+
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">On behalf of myself, my staff and all
+                the sellers in Mall naija we say thank you for your patronage. </p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer-->
+<footer class="footer py-4">
+    <div id="contact" class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright Â© MALL NAIJA 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+                {% for admindetails in admin_details %}
+                 <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{admindetails.whatsapp_number}}">
+                     <i class="fab fa-whatsapp"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.email}}"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.facebook}}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.instagram}}"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{admindetails.phone_number}}"><i class="fa fa-phone"></i></a>
+                {% endfor %}
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="mr-3" href="#!">Privacy Policy</a>
+                <a href="#!">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap core JS-->
+ <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+  <script src="{% static 'accounts/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'accounts/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<!-- Third party plugin JS-->
+<!-- Contact form JS-->
+<script type="text/javascript" src="{% static 'js/searching.js' %}"></script>
+<script src="{% static 'js/toastr.js' %}"></script>
+<!-- Core theme JS-->
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/sweetalerts.js' %}"></script>
+
+<script src="{% static 'js/scripts.js'%}"></script>
+<script>
+window.addEventListener('scroll', function(e){
+    var sticky = $(window).scrollTop();
+    if (sticky >= 500) {
+    document.getElementById('mainNav').classList.add('fixed-top')
+    document.getElementById('mainNav').classList.remove('bg-dark')
+
+
+    }
+    if (sticky <=500){
+        document.getElementById('mainNav').classList.remove('fixed-top')
+        document.getElementById('mainNav').classList.add('bg-dark')
+
+    }
+});
+
+
+</script>
+
+{% load sweetify %}
+{% sweetify %}
+</body>
+</html>

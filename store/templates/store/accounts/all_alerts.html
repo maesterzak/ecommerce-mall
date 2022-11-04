@@ -1,0 +1,116 @@
+{% extends 'store/accounts/base_2.html' %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-12">
+        <center><a class="btn btn-success" href="{% url 'dashboard'%}">Back to Dashboard</a></center>
+    </div>
+</div>
+<hr>
+<h4>This page contains all your alerts </h4>
+
+ {% if request.user.seller %}
+{% for alert_system in alert %}
+{% if alert_system.alert_page == 'Order_Alert'%}
+                            <form method="post" action="{% url 'orderitem_list' alert_system.order.pk %}">
+                                {% else %}
+                            <form method="post" action="{% url 'money_withdrawal_details' alert_system.money_withdrawal.pk %}">
+                                {% endif %}
+                                {% csrf_token %}
+                            <button id="alert_btn" value="alert_btn" type="submit" name="alert_btn" class="btn-block box-element">
+
+
+                                <div>
+
+                                        <div class="row">
+                                            <div class="col-9">
+                                                    {{alert_system.date_added}}
+                                            </div>
+                                            <div class="col-3 box-element">
+                                                {% if alert_system.receiver_status == 'New' %}
+                                              <h7 style="color:red"><strong> {{alert_system.receiver_status}}</strong></h7>
+
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                    {% if alert_system.receiver_status == 'New' %}
+                                            {% if alert_system.alert_page == 'Order_Alert'%}
+                                    <p class="font-weight-bold "style="color:gold">{{alert_system.alert_text}}</p>
+                                            {% else %}
+                                    <p class="font-weight-bold" style="color:green">{{alert_system.alert_text}}</p>
+                                            {% endif %}
+                                    {% else %}
+                                            {% if alert_system.alert_page == 'Order_Alert'%}
+                                    <p class="font-light"style="color:gold">{{alert_system.alert_text}}</p>
+                                            {% else %}
+                                    <p class="font-weight" style="color:green">{{alert_system.alert_text}}</p>
+                                            {% endif %}
+                                    {% endif %}
+                                            </div>
+                                        </div>
+
+                                </div>
+                            </button>
+                            </form>
+                            </form>
+{% endfor %}
+{% endif %}
+
+
+{% if request.user.customer %}
+{% for alert_system_customer in alert %}
+{% if alert_system_customer.alert_page == 'Order_Alert'%}
+                            <form method="post" action="{% url 'orderitem_list' alert_system_customer.order.pk %}">
+                                {% else %}
+                            <form method="post">
+                                {% endif %}
+                                {% csrf_token %}
+                            <button id="alert_btn" value="alert_btn" type="submit" name="alert_btn" class="btn-block box-element">
+
+
+                                <div>
+
+                                        <div class="row">
+                                            <div class="col-9">
+                                                    {{alert_system_customer.date_added}}
+                                            </div>
+                                            <div class="col-3 box-element">
+                                                {% if alert_system_customer.sender_status == 'New' %}
+                                              <h7 style="color:red"><strong> {{alert_system_customer.sender_status}}</strong></h7>
+
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                    {% if alert_system_customer.sender_status == 'New' %}
+                                            {% if alert_system_customer.alert_page == 'Order_Alert'%}
+                                    <p class="font-weight-bold "style="color:gold">{{alert_system_customer.alert_text}}</p>
+                                            {% else %}
+                                    <p class="font-weight-bold">{{alert_system_customer.alert_text}}</p>
+                                            {% endif %}
+                                    {% else %}
+                                            {% if alert_system_customer.alert_page == 'Order_Alert'%}
+                                    <p class="font-light"style="color:gold">{{alert_system_customer.alert_text}}</p>
+                                            {% else %}
+                                    <p class="font-weight">{{alert_system_customer.alert_text}}</p>
+                                            {% endif %}
+                                    {% endif %}
+                                            </div>
+                                        </div>
+
+                                </div>
+                            </button>
+                            </form>
+                            </form>
+{% endfor %}
+{% endif %}
+
+
+{% endblock %}

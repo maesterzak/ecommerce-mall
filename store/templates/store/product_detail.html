@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<br>
+<div class="row">
+	<div class="col-lg-6">
+		<div class="box-element" style=" width: 100%;">
+			<img src="{{ product.imageURL }}" alt="Card image cap" style=" width: 100%;" align="middle">
+
+		</div>
+		</div>
+	<div class="col-lg-6">
+		<div class="box-element"><center>
+		<p>Product Name :{{product.name}} </p>
+			<hr>
+		Price:<span>&#8358;</span>{{product.price}}
+			<hr>
+			<p style="display: inline-block;">Description:{{product.Description}}</p>
+			<hr>
+		<div class="box-element product">
+            <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">
+                Add to Cart
+            </button>
+        </div>
+
+			</center>
+		</div>
+		<hr>
+		<div class="col-12 card">
+		<div class="box-element">
+			<a style="float:right; margin:5px" class="btn btn-success" href="{% url 'store' %}">Back To MALL</a>
+			<a style="float:left; margin:5px" class="btn btn-success" href="{% url 'store_seller' product.seller.pk %}">{{product.seller.store_name}}</a>
+			</div>
+			</div>
+	</div>
+
+
+	</div>
+<br>
+
+<div class="row">
+	<div class="col-lg">
+		<div class="box-element">
+
+		</div>
+		</div>
+</div>
+{% endblock content %}

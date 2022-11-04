@@ -1,0 +1,93 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<a class="nav-link js-scroll-trigger" href="{% url 'store'%}#services">Services</a>
+<div class="row" style="margin-right:0rem">
+    <div class="col-lg-12">
+        <div class="box-element row">
+            <a class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+
+            <br>
+            <br>
+
+            <table class="table" >
+                <tr>
+                    <th>
+                        <h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
+                    </th>
+                     <th>
+
+                        <h5>Total: <strong><span>&#8358;</span>{{order.get_cart_total|floatformat:2}}</strong></h5>
+                    </th>
+                    <th>
+                        {% if cartItems > 0 %}
+                        {%if shipping_meths %}
+                        <a style="float:right; margin:5px;color:gold" class="btn btn-outline-dark btn-light" href="{% url 'shipping_method' %}">Shipping</a>
+                        {% else %}
+                        <a style="float:right; margin:5px;color:gold" class="btn btn-outline-dark btn-light" href="{% url 'checkout' %}">Checkout</a>
+                        {% endif %}
+                        {% else %}
+                        <a style="float:right; margin:5px;color:gold" class="btn btn-outline-dark btn-light" href="{% url 'shipping_method' %}">Shipping</a>
+                        {% endif %}
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div class="row box-element">
+        <div class="card shadow col-12">
+
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Items</th>
+                      <th>Price(&#8358;)</th>
+                      <th>Quantity</th>
+                      <th>Total(&#8358;)</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Image</th>
+                      <th>Items</th>
+                      <th>Price(&#8358;)</th>
+                      <th>Quantity</th>
+                      <th>Total(&#8358;)</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                                                      {% for item in items %}
+                    <tr>
+                      <td><img class="row-image" style="width:5rem;height:5rem" src="{{item.product.imageURL}}"></td>
+                      <td>{{item.product.name}}</td>
+                        <td>{{item.product.price}}</td>
+                      <td><p class="quantity">{{item.quantity}}</p>
+                    <div class="quantity">
+                        <img data-product={{item.product.id}} data-action="add" class="chg-quantity update-cart" src="{%static 'images/arrow-up.png' %}"/>
+
+                        <img data-product={{item.product.id}} data-action="remove" class="chg-quantity update-cart" src="{%static 'images/arrow-down.png' %}">
+                    </div></td>
+                        <td>{{item.get_total}}</td>
+
+                    </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+<br>
+
+
+
+    </div>
+</div>
+
+{% endblock content %}

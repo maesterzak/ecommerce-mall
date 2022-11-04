@@ -1,0 +1,87 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div id="test_refresh">
+
+                <div id="ship_method" class="box-element hidden">
+                    <center><h4>Shipping Method</h4></center>
+                    <hr>
+                    <div class="col-12 box-element">
+                    <a style="margin:5px;color:gold" class="btn btn-outline-dark btn-light" href="{% url 'cart' %}">&#x2190;Cart</a></div>
+                    <br>
+                    <center><p>Below is or are the shipping methods offered by {{order.seller.store_name}}</p></center><p>
+                    {% for shipping_method in shipping_M %}
+                    <br>
+                    <center><h6>{{shipping_method.method}}</h6></center>
+                    <center><p>{{shipping_method.description}}</p></center>
+                <center><button class="btn-light" id="shipmeth" wan={{shipping_method}} value={{shipping_method}} type="submit" name={{shipping_method}} style="color:gold"><i class="fas fa-truck-moving" style="color:gold"></i> {{shipping_method}}</button></center>
+                <br>
+                    {% endfor %}
+
+                </div>
+
+<br>
+<div class="row hidden" id="shipping_method_selected">
+    <div class="col-12 box-element">
+        <div class="col-12">
+            <div class="row">
+            <div class="col-12 box-element">
+        <a style="margin:5px;color:gold;float:left" class="btn btn-outline-dark btn-light" href="{% url 'cart' %}">&#x2190;Cart</a><a style="margin:5px;color:gold;float:right" class="btn btn-outline-dark btn-light" href="{% url 'checkout' %}">Checkout&#x2192;</a>
+
+    </div>
+                </div>
+            <br>
+            <div id="ship_select" class="col-12 box-element">
+            <center><h5>Shipping Method</h5></center>
+
+            <br>
+            <center><p>You have selected <strong>{{order.shipping_method}}</strong> as your prefered method of shipping for this order</p>
+                <button id="change_btn" name="change_btn" ban="change_btn" class="btn btn-warning" type="submit" value="change_btn">Change</button></center>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="no_shipping_method" class="hidden">
+<center><H4>No shipping method</H4></center>
+<br>
+<div class="row">
+    <div class="col-12 box-element">
+        <a style="margin:5px;color:gold;float:left" class="btn btn-light" href="{% url 'cart' %}">&#x2190;Cart</a><a style="margin:5px;color:gold;float:right" class="btn btn-light" href="{% url 'checkout' %}">Checkout&#x2192;</a>
+
+    </div>
+</div>
+<br>
+<div class="col-12 box-element">
+    <center><p>No order has been made, initialize an order to be able to select shipping method </p></center>
+</div>
+</div>
+</div>
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/checkout_order.js' %}"></script>
+<script>
+    var shipping_M='{{shipping_M}}'
+    var order_shipping='{{order.shipping_method}}'
+    var order_seller='{{order.seller}}'
+    var users_type='{{user.seller}}'
+
+
+
+
+    if (order_seller == 'None' || users_type != ''){
+        document.getElementById('no_shipping_method').classList.remove('hidden');
+
+    }
+    else{
+    if (order_shipping == 'Unknown'){
+        document.getElementById('ship_method').classList.remove('hidden');
+
+    }
+    if (order_shipping != 'Unknown'){
+        document.getElementById('shipping_method_selected').classList.remove('hidden');
+    }
+    }
+
+</script>
+{% endblock content %}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>MALL NAIJA</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+        <link href="{% static 'accounts/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Google fonts-->
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+        <link rel="stylesheet" href="{% static 'css/toastr.css' %}">
+
+    <script type="text/javascript">
+            var user = '{{request.user}}'
+
+            function getToken(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getToken('csrftoken');
+
+    </script>
+</head>
+<body id="page-top" >
+<div class="row bg-dark" style="margin-right:0rem">
+        <div class="col-4">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="{% static 'assets/img/malllog.png'%}"
+                                                                            style="height:2rem" alt=""/></a>
+        </div>
+    <div class="col-8" style="color:gold">
+
+        </div>
+</div>
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-dark" id="mainNav" style="padding-top: 0rem; padding-bottom:0rem;">
+
+    <div class="container">
+        <div class="form-inline my-2 my-lg-0">
+            {% if request.user.seller %}
+            <a href="{% url 'dashboard' %}" class="btn btn-warning">Dashboard</a>
+            <a href="#">
+                <!--<img class="profile-icon" src="{% static 'images/profile_logo.png' %}">-->
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:blue"></i>
+            </a>
+            {% elif request.user.customer %}
+            <a href="{% url 'user-page' %}" class="btn btn-warning">Customers</a>
+            <a href="#">
+                <!--<img class="profile-icon" src="{% static 'images/profile_logo.png' %}">-->
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+            </a>
+
+            {% else %}
+
+            <div class="dropdown">
+    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Register
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a href="{% url 'register' %}" class="dropdown-item " style="color:gold;">Customer</a>
+        <a class="dropdown-item " style="color:gold;" href="{% url 'register_seller' %}">Seller</a>
+    </div>
+</div>
+            <a href="#">
+                <!--<img class="profile-icon" src="{% static 'images/profile_logo.png' %}">-->
+                <i class="fas fa-user h-50" style="height:5rem; margin-left:0.5rem; color:gray"></i>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'cart' %}">
+                <i class="fas fa-shopping-cart h-50" style="height:5rem; margin-left:0.5rem; color:gold"></i>
+
+            </a>
+            <p id="cart-total">{{cartItems}}</p>
+        </div>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ml-1"></i>
+        </button>
+        <div class="collapse navbar-collapse collapse" id="navbarResponsive">
+
+            {% if request.user.is_authenticated %}
+            <a style="margin-left:1.5rem;" href="{% url 'logout' %}" class="btn btn-warning">LOGOUT</a>
+            {% else %}
+            <a style="margin-left:1.5rem;" href="{% url 'login' %}" class="btn btn-warning">LOG IN</a>
+            {% endif %}
+
+        </div>
+    </div>
+</nav>
+    <div class = "container" >
+        {% block content %}
+
+        {% endblock %}
+    </div>
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright @MALL NAIJA 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+                {% for admindetails in admin_details %}
+                  <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{admindetails.whatsapp_number}}">
+                     <i class="fab fa-whatsapp"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.email}}"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.facebook}}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.instagram}}"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{admindetails.phone_number}}"><i class="fa fa-phone"></i></a>                {% endfor %}
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="mr-3" href="#!">Privacy Policy</a>
+                <a href="#!">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="{% static 'accounts/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- Third party plugin JS-->
+        <script src="{% static 'accounts/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+        <script src="{% static 'accounts/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'accounts/js/demo/datatables-demo.js' %}"></script>
+
+        <!-- Core theme JS-->
+<script src="{% static 'js/toastr.js' %}"></script>
+        <script src="{% static 'js/scripts.js'%}"></script>
+    <script src="{% static 'js/sweetalerts.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+{% load sweetify %}
+{% sweetify %}
+    </body>
+</html>

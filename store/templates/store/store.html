@@ -1,0 +1,161 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- Services-->
+        <section class="page-section" id="services">
+            <div class="container">
+
+
+
+                <div class="row text-center">
+
+                    <div class="col-md-3">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Services</h4>
+
+                        <p class="text-muted">Mall naija is an online platform that offers a stable avenue
+                        for the sales and purchases of a wide variety of products and services. For more information
+                        <a href="#">click here</a>.HAPPY SHOPPING!! .</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Product-Category</h4>
+                        <div class="row">
+                            {% for category in category_list %}
+                            <div class="col-4">
+                                    <a href="{% url 'cats' category.pk %}"><strong>{{category.name}}</strong></a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <br>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-store fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Store-Category</h4>
+                        <div class="row">
+                            {% for storetype in store_category %}
+                            <div class="col-4">
+                                    <a style="" href="{% url 'store_category' storetype.pk %}"><strong>{{storetype.type}}</strong></a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <br>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Mall Security</h4>
+
+                        <p class="text-muted">Mall naija offers customer protection for all order payment
+                            methods <strong>except</strong> for the Whatsapp payment method. <a href="#">Click here</a> to learn what it entails</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- Portfolio Grid-->
+        <section class="page-section bg-light" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Trending Products</h2>
+                    <h3 class="section-subheading text-muted">Below are the 3 highest sold products in Mall Naija.</h3>
+                </div>
+
+                <!-- PRODUCT SECTION-->
+ <div class="row">
+    {% for product in products %}
+    <div class="col-lg-4 col-sm-6 box-element product">
+        <div>
+            <p> <a class="badge-pill" href="{% url 'store_seller' product.seller.pk %}">{{product.seller.store_name}}</a> <a href="{% url 'cats' product.category.pk %}" style="display: inline-block; float: right">{{product.category}}</a></p>
+        </div>
+
+
+         <center><img class="img-fluid w-75" src="{{ product.imageURL}}" style="height:15rem" alt="" /></center>
+
+        <div class="box-element product">
+            <h6><strong>{{product.name}}</strong></h6>
+            <hr>
+            <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">
+                Add to Cart
+            </button>
+            <a class="btn btn-outline-success" href="{% url 'product_detail' product.pk%}">View</a>
+            <h6 style="display: inline-block; float: right"><span>&#8358;</span>{{product.price|floatformat:2}}</h6>
+        </div>
+
+
+</div>
+    {% endfor %}
+
+
+</div>
+
+ </div>
+        </section>
+<br>
+<div class="container">
+    <div class="text-center">
+                    <h2 class="section-heading text-uppercase">STORES</h2>
+                    <h9 class="section-subheading text-muted">Below are all the stores in our mall.</h9>
+                </div>
+</div>
+<br>
+<div class="row">
+    {% for store_list in page_obj %}
+    <div class="col-xs-10 col-lg-3 offset-md-1 box-element card h-100 w-50 mb-4">
+        <img class="img-fluid" src="{{store_list.store_imageURL}}" style="height:10rem" alt="" />
+        <div class="portfolio-caption" style="height:3rem">
+            <div class="portfolio-caption-heading"><a href="{% url 'store_seller' store_list.pk %}" style="font-size:1rem"><center><strong>{{store_list.store_name}}</strong></center></a></div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if page_obj.has_other_pages %}
+        <br>
+        <br>
+
+    <div class="col-lg-12">
+
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <br>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;Previous</a></li>
+
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li  class="active page-item page-link-current"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class=" page-item" ><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"> Next&raquo;</a></li>
+
+    {% endif %}
+  </ul>
+
+
+   </div>
+{% endif %}
+
+</div>
+{% endblock %}

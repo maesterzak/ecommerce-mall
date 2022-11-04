@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="row">
+<div class="col-12">
+        <a style="float:right; margin:5px" class="badge-pill badge-warning" href="{% url 'store' %}">Back To Mall</a>
+    </div>
+    </div>
+<center><h5>Store searched for : {{query}}</h5></center>
+<hr>
+<div class="row">
+    {% if store %}
+    {% for seller in store %}
+     <div class="col-xs-10 col-lg-3 box-element card h-100 w-50">
+        <img class="img-fluid" src="{{seller.store_imageURL}}" style="height:10rem" alt="" />
+        <div class="portfolio-caption" style="height:3rem">
+            <div class="portfolio-caption-heading"><a href="{% url 'store_seller' seller.pk %}" style="font-size:0.8rem"><center><strong>{{seller.store_name}}</strong></center></a></div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <p>Store you searched for does not exist at Mall NAIJA </p>
+    </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

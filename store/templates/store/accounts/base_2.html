@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>MALL NAIJA</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+        <link href="{% static 'accounts/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Google fonts-->
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/toastr.css' %}">
+
+</head>
+<body id="page-top">
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-dark " id="mainNav" style="padding-top: 0rem; padding-bottom:0rem;">
+
+    <div><a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="{% static 'assets/img/malllog.png'%}"
+             style="height:2rem"                                                            alt=""/></a></div>
+    <div class="container">
+        <p class="navbar-brand js-scroll-trigger card btn"style="font-size:1rem;background-color:transparent;color:white">
+            {{request.user.seller.store_name}}</p>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ml-1"></i>
+        </button>
+        <div class="collapse navbar-collapse collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ml-auto">
+
+
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-warning">LOGOUT</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-warning">LOG IN</a>
+            {% endif %}
+                 </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+    <div class = "container" >
+
+{% block content %}
+{% endblock %}
+
+    </div>
+<!-- Footer-->
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright Â© MALL NAIJA 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+                 {% for admindetails in admin_details %}
+                  <a class="btn btn-dark btn-social mx-2" href="https://wa.me/+234{{admindetails.whatsapp_number}}">
+                     <i class="fab fa-whatsapp"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.email}}"><i class="fas fa-envelope"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.facebook}}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="{{admindetails.instagram}}"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="tel:{{admindetails.phone_number}}"><i class="fa fa-phone"></i></a>
+                {% endfor %}
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="mr-3" href="#!">Privacy Policy</a>
+                <a href="#!">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+ <script src="{% static 'accounts/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'accounts/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+        <!-- Contact form JS-->
+        <script src="{% static 'accounts/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/toastr.js' %}"></script>
+
+ <script src="{% static 'accounts/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'accounts/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'accounts/js/demo/datatables-demo.js' %}"></script>
+        <!-- Core theme JS-->
+<script src="{% static 'js/sweetalerts.js' %}"></script>
+        <script src="{% static 'js/scripts.js'%}"></script>
+{% load sweetify %}
+{% sweetify %}
+</body>

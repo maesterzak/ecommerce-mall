@@ -1,0 +1,76 @@
+{% extends 'store/accounts/base_2.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'table' %}">Back To Dashboard</a>
+    </div>
+</div>
+<div class="'row">
+    <div class="col-12">
+        <div class="card card-body">
+
+            <center><h1>Add new Products</h1></center>
+            <hr>
+                <form method="POST" action="" enctype="multipart/form-data">
+                 {% csrf_token %}
+                    <center><h6 class="btn btn-light">{{form.name.label}}<a onclick="query1();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                    <center>{{form.name}}</center>
+<hr>
+                    <center><h6 class="btn btn-light">{{form.price.label}}</h6></center>
+                    <center>{{form.price}}</center>
+<hr>
+                    <center><h6 class="btn btn-light">{{form.stock.label}}<a onclick="query2();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                    <center><h6 class="btn btn-light">{{form.stock}}</h6></center>
+                    <hr>
+                    <center><h6 class="btn btn-light">{{form.digital.label}}<a onclick="query3();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                    <center>{{form.digital}}</center>
+<hr>
+                    <center><h6 class="btn btn-light">{{form.image.label}}</h6></center>
+                    <center>{{form.image}}</center>
+<hr>
+                    <center><h6 class="btn btn-light">{{form.Description.label}}<a onclick="query4();return false"><i class="fa fa-question-circle"></i></a></h6></center>
+                    <center>{{form.Description}}</center>
+<hr>
+                    <center><h6 class="btn btn-light">{{form.category.label}}</h6></center>
+                    <center><p>If your product or service category is not amongst the ones below contact MALL NAIJA, we'll create it for you </p></center>
+
+                    <center>{{form.category}}</center>
+                    <hr>
+
+
+              <center><input class="btn-success" type="submit" name="Add product"></center>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    function query1() {
+        toastr.options.timeOut = 9000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Input name of product or service, note only 15 characters are allowed  ');
+    }
+    function query2() {
+        toastr.options.timeOut = 9000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Quantity of this product you have for sale ');
+    }
+    function query3() {
+        toastr.options.timeOut = 9000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('Digital is set to NO by default, only change to YES for products that do not require shipping(i.e online ebooks, services).Checkout user guide for more info  ');
+    }
+    function query4() {
+        toastr.options.timeOut = 9000;
+
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.info('A detailed info about what this product is, you can leave blank if you want  ');
+    }
+
+</script>
+{% endblock content %}

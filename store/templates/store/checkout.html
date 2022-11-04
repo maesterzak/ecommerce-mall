@@ -1,0 +1,302 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+            <form id="form">
+                <div id="user-info">
+                    <div class="form-field">
+                        <input required class="form-control" type="text" name="name" placeholder="name...">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="email" name="email" placeholder="Email...">
+                    </div>
+                </div>
+
+                <div id="shipping-info">
+                    <p>Shipping Information</p>
+                    <hr>
+                     <div class="form-field">
+                        <input required class="form-control" type="text" name="address" placeholder="Address...">
+                    </div>
+                     <div class="form-field">
+                        <input required class="form-control" type="text" name="city" placeholder="City...">
+                    </div>
+                     <div class="form-field">
+                        <input required class="form-control" type="text" name="state" placeholder="State...">
+                    </div>
+                     <div class="form-field">
+                        <input required class="form-control" type="text" name="zipcode" placeholder="Zip Code...">
+                    </div>
+                     <div class="form-field">
+                        <input required class="form-control" type="text" name="country" placeholder="Zip Code...">
+                    </div>
+
+                </div>
+
+                <br>
+                <input id="form-button" onclick="refresh()" class="btn btn-success btn-block" type="submit" value="Continue">
+            </form>
+
+        </div>
+
+         <br>
+
+    <div class="box-element hidden" id="payment-info">
+        <div id="checkout_box1">
+
+        <center><p><strong>Payment Options</strong></p></center>
+        <div  style="background-color:green">
+            <center><strong><a class="btn btn-success btn-block" style="color:white;" target="_blank" onclick="stop()" id="method1">
+                    WHATSAPP METHOD <i class="fab fa-whatsapp"></i></a></strong></center>
+        </div>
+        <div class="col hidden" id="whatsapp">
+            {% if confirm %}
+            <p>Please note!! Whatsapp is required to be installed either on your Phone, Tablet or System and customer protection is not offered
+            for this method of order completion.</p>
+        <div id="whatsapp2">
+
+                <button id="whatsapp_2" style="color:green;" class="btn-light" info="10" type="submit" value="whatsapp_2" name="whatsapp_2">CLICK HERE TO PROCEED</button></div>
+            <p id="whatsapp_text1" class="hidden">
+                P.S click <button class="btn-light" style="color:green;" onclick="location.reload()">here</button> to refresh page and show other methods of  payment
+            <br>
+                    <br>
+                Click on the button below, a new browser tab will open up, click on
+                <strong>continue to chat</strong> and you will be redirected to the seller with
+                your order details on your device whatsapp. For further details go to this link to learn more. HAPPY SHOPPING!!.
+            <br>
+                <br>
+            </p><br>
+
+            <div id="whatsapp_paybtn" class="col-lg-12 box-element hidden">
+                {% if order.shipping_method != 'Unknown' %}
+                <center><strong><a class="btn btn-success" style="color:white;" target="_blank" id="wp-make-payment"
+                                   href="https://wa.me/2348109905694/?text=Hi my name is {{order.customer}}, am interested in buying product(s) from your store. My order
+                                   has already been placed with customer name={{order.customer}}, pls check your dashboard for my order details and provide me with a bank account for payment
+">
+                    WHATSAPP <i class="fab fa-whatsapp"></i></a></strong></center>
+            {% else %}
+
+                <center><p>You are yet to set a shipping method</p></center>
+
+            {% endif %}
+            </div>
+
+            <br>
+            {% else %}
+            <center><strong><h7>ERROR!!, cannot proceed</h7></strong></center>
+            <p>Item(s) <i class="fa fa-angle-double-right" style="color:green;"></i> {{product}} in your cart exceeds the quantity avaialble in stock, you have {{quantity}}
+               {{product}} in your cart and the seller has only {{stock}} {{product}} available for sale , please return to cart and remove or reduce quantity of
+            the product</p>
+            {% endif %}
+
+        </div>
+            <hr>
+        <div id="method2"  onclick="stop()" class="btn btn-warning btn-block">
+            <center><strong><a style="color:white;" target="_blank" onclick="stop()">
+                    ATM CARD <i class="fa fa-credit-card"></i></a></strong></center>
+        </div>
+            <div id="method2_cont" class="hidden">
+                {% if confirm %}
+                <p>Please note!! customer protection is offered for this medium of payment, <a href="#">CLICK HERE</a> to discover
+                what it entails.</p>
+                <div id="method2_confirm">
+                <button id="method2_btn" style="color:gold;" class="btn-light" info2="20" type="submit" value="method2_btn" name="method2_btn">CLICK HERE TO PROCEED</button></div>
+                <br>
+                <p id="method2_text" class="hidden">
+            P.S click <button class="btn-light" style="color:gold;" onclick="location.reload()">here</button> to refresh page and show other methods of  payment
+            <br>
+                    <br>
+                    Click the link below to proceed to payment with bank card through <strong>Flutterwave</strong> payment gateway.</p>
+                <div id="method2_paybtn" class="col-12 box-element hidden">
+                    {% if order.shipping_method != 'Unknown' %}
+                    <form>
+                      <script src="https://checkout.flutterwave.com/v3.js"></script>
+                     <center><button class="btn btn-warning" type="button" id="flutwave" onClick="makePayment()">PAY NOW</button></center>
+                    </form>
+                    {% else %}
+                    <center><p>You are yet to set a shipping method</p></center>
+                    {% endif %}
+                </div>
+                {% else %}
+            <center><strong><h7>ERROR!!, cannot proceed</h7></strong></center>
+            <p>Item(s) <i class="fa fa-angle-double-right" style="color:gold;"></i> {{product}} in your cart exceeds the quantity avaialble in stock, you have {{quantity}}
+               {{product}} in your cart and the seller has only {{stock}} {{product}} available for sale ,please return to cart and remove or reduce quantity of
+            the product</p>
+            {% endif %}
+            </div>
+            <hr>
+        <button id="make-payment">Make Payment</button>
+    </div>
+    </div>
+    </div>
+
+
+
+     <div class="col-lg-6">
+        <div class="box-element">
+            {% if cartItems > 0 %}
+            {% if shipping_meths %}
+            <a class="btn btn-outline-dark" href="{% url 'shipping_method' %}">&#x2190; Shipping</a>
+            {% else %}
+            <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+            {% endif %}
+            {% else %}
+            <a class="btn btn-outline-dark" href="{% url 'shipping_method' %}">&#x2190; Shipping</a>
+            {% endif %}
+            <hr>
+                <h3>Order Summary</h3>
+            <hr>
+            {% for item in items %}
+            <div class="cart-row">
+                <div style="flex:1"><img class="row-image" src="{{item.product.imageURL}}"></div>
+                <div style="flex:1"><p>{{item.product.name}}</p></div>
+                <div style="flex:1"><p><span>&#8358;</span>{{item.product.price}}</p></div>
+                <div style="flex:1"><p>X{{item.quantity}}</p></div>
+
+            </div>
+            {% endfor %}
+
+            <p><strong>Items: {{order.get_cart_items}}</strong></p>
+            <p><strong>Total: <span>&#8358;</span>{{order.get_cart_total|floatformat:2}}</strong></p>
+            <p><strong>Shipping Method: {{order.shipping_method}}</strong></p>
+        </div>
+
+    </div>
+</div>
+ <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ajax_refresh.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/checkout_order.js' %}"></script>
+
+
+
+<script type="text/javascript">
+    var shipping = '{{order.shipping}}'
+    var total = '{{order.get_cart_total}}'
+    if (shipping=='False'){
+        document.getElementById('shipping-info').innerHTML=''
+    }
+    if (user !='AnonymousUser'){
+        document.getElementById('user-info').innerHTML=''
+    }
+
+    if(shipping =='false' && user !='anonymousUser'){
+        document.getElementById('form-wrapper').classList.add('hidden');
+        document.getElementById('payment-info').classList.remove('hidden');
+
+    }
+
+    var form = document.getElementById('form')
+
+    form.addEventListener('submit', function(e){
+    e.preventDefault()
+    console.log('form submitted...')
+    document.getElementById('form-button').classList.add('hidden')
+    document.getElementById('payment-info').classList.remove('hidden')
+
+    })
+     $(document).on('click', '#method1', function(event){
+
+        document.getElementById('whatsapp').classList.remove('hidden')
+        document.getElementById('method2_cont').classList.add('hidden')
+    });
+     $(document).on('click', '#method2', function(event){
+
+        document.getElementById('method2_cont').classList.remove('hidden')
+        document.getElementById('whatsapp').classList.add('hidden')
+    });
+
+    $(document).on('click','#wp-make-payment', function(e){
+        submitFormData()
+    });
+
+    $(document).on('click','#make-payment', function(event){
+     submitFormData()
+    });
+
+    function submitFormData(){
+    console.log('payment button clicked')
+
+    var userFormData = {
+        'name':null,
+        'email':null,
+        'total':total,
+        }
+    var shippingInfo = {
+        'address':null,
+        'city':null,
+        'state':null,
+        'zipcode':null,
+    }
+    if(shipping !='False'){
+        shippingInfo.address = form.address.value
+        shippingInfo.city = form.city.value
+        shippingInfo.state = form.state.value
+        shippingInfo.zipcode = form.zipcode.value
+
+
+    }
+    if(user =='AnonymousUser'){
+        userFormData.name = form.name.value
+        userFormData.email = form.email.value
+
+    }
+
+    var url = '/process_order/'
+    fetch (url, {
+        method:'POST',
+        headers:{
+               'Content-Type':'application/json',
+               'X-CSRFToken':csrftoken,
+                 },
+        body:JSON.stringify({'form': userFormData, 'shipping':shippingInfo}),
+        credentials:'include'
+    })
+   .then((response) => response.json())
+   .then((data) => {
+        console.log('success:', data);
+        alert('Transaction completed');
+        window.location.href = "{% url 'user-page' %}"
+   })
+    }
+</script>
+<script>
+ function makePayment() {
+    FlutterwaveCheckout({
+      public_key: "{{public_key}}",
+      tx_ref: {{order.id}},
+      amount: {{order.get_cart_total|floatformat:2}},
+      currency: "NGN",
+      country: "NG",
+      payment_options: "card, mobilemoneyghana, ussd",
+      meta: {
+        consumer_id: 23,
+        consumer_mac: "92a3-912ba-1192a",
+      },
+      customer: {
+        email: "zamba@gmail.com",
+        phone_number: "{{request.user.customer.phone_number}}",
+        name: "{{request.user.customer}}",
+
+      },
+      callback: function (data) {
+        submitFormData();
+      },
+      onclose: function() {
+        // close modal
+      },
+      customizations: {
+        title: "Mall NAIJA",
+        description: "Payment for items in cart",
+        logo: "https://assets.piedpiper.com/logo.png",
+      },
+    });
+  }
+
+
+
+</script>
+
+{% endblock content %}
